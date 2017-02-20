@@ -33,7 +33,7 @@
 <div id="comments">
   <%= render :partial => @link.comments %>
 </div>
-<%= form_for @link.comments.build, url: link_comments_path(@link) do |f| %>
+<%= form_for [@link, @link.comments.build] do |f| %>
   <div class="field">
     <%= f.text_area :body, class: "form-control" %>
   </div>
