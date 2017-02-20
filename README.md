@@ -6,4 +6,4 @@ Ruby on Rails 5 week challenge
 
 [youtube](https://www.youtube.com/watch?v=7-1HCWbu7iU)
 
-[github repo](https://github.com/mackenziechild/raddit)
+[Mackenzie Child github repo](https://github.com/mackenziechild/raddit)
