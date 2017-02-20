@@ -1,5 +1,6 @@
 class LinksController < ApplicationController
   before_action :set_link, only: [:show, :edit, :update, :destroy, :upvote, :downvote]
+  before_action :check_current_user, only: [:update, :destroy]
   before_filter :authenticate_user!, except: [:index, :show]
 
   # GET /links
@@ -42,7 +43,7 @@ class LinksController < ApplicationController
   # PATCH/PUT /links/1.json
   def update
     respond_to do |format|
-      if @link.user == current_user and @link.update(link_params)
+      if @link.update(link_params)
         format.html { redirect_to @link, notice: 'Link was successfully updated.' }
         format.json { render :show, status: :ok, location: @link }
       else
@@ -55,7 +56,7 @@ class LinksController < ApplicationController
   # DELETE /links/1
   # DELETE /links/1.json
   def destroy
-    @link.destroy if @link.user == current_user
+    @link.destroy
     respond_to do |format|
       format.html { redirect_to links_url, notice: 'Link was successfully destroyed.' }
       format.json { head :no_content }
@@ -64,12 +65,12 @@ class LinksController < ApplicationController
 
   def upvote
     @link.upvote_by current_user
-    redirect_to :back
+    redirect_back fallback_location: :back
   end
 
   def downvote
     @link.downvote_by current_user
-    redirect_to :back
+    redirect_back fallback_location: :back
   end
 
   private
@@ -81,5 +82,9 @@ class LinksController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def link_params
       params.require(:link).permit(:title, :url)
+    end
+
+    def check_current_user
+      redirect_back(fallback_location: :back) unless @link.user == current_user
     end
 end
